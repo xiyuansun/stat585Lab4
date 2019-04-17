@@ -7,10 +7,15 @@ always_allow_html: yes
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, messsage = FALSE)
+knitr::opts_chunk$set(echo = TRUE, messsage = FALSE, warning = FALSE, comment = FALSE)
 ```
 
 Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
+
+```{r}
+# Load libraries
+library(tidyverse)
+```
 
 # Iowa Liquor Sales Data
 
@@ -18,14 +23,23 @@ Our GitHub repository for this lab can be found [here](https://github.com/xiyuan
 
 ### Data Cleaning
 
-```{r rename cols}
+```{r}
+# Read in data
+story_liquor <- read_csv("data/Iowa_Liquor_Sales-Story.csv")
+```
 
-liq2 %>%
-  rename_all(
-    funs(
-      # Remove spaces between words
-      str_replace_all(., "[\\(\\)_\\/ ]", "") %>%
-      tolower(.)))
+```{r rename cols}
+# Data cleaning
+story_liquor <- story_liquor %>%
+  # Remove spaces between words and send words to lower case
+  rename_all(funs(str_replace_all(., "[\\(\\)_\\/ ]", "") %>% tolower(.))) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  mutate_at(.vars = c("storenumber", "storename", "address", "city", 
+                      "zipcode", "storelocation", "countynumber",
+                      "county", "category", "categoryname", "vendornumber",
+                      "vendorname", "itemnumber"), 
+            funs(factor(.) %>% tolower())) %>%
+  mutate_if(.predicate = is.factor, .funs = tolower)
 ```
 
 
