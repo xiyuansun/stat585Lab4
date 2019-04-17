@@ -27,16 +27,29 @@ item_number <- test_json_file$itemno
 item_descp <- test_json_file$im_desc
 pack <- test_json_file$pack
 bottle_vol <- test_json_file$bottle_volume_ml 
+state_bottle_cost <- test_json_file$state_bottle_cost
+state_bottle_retail <- test_json_file$state_bottle_retail
+sale_bottles <- test_json_file$sale_bottles
+sale_dollars <- test_json_file$sale_dollars
+sale_liters <- test_json_file$sale_liters
+sale_gallons <- test_json_file$sale_gallons
 
-# install.packages("devtools")
-# devtools::install_github("Chicago/RSocrata")
-# 
-# library("RSocrata")
-# 
-# df <- read.socrata(
-#   "https://data.iowa.gov/resource/m3tr-qhgy.json",
-#   app_token = "YOURAPPTOKENHERE",
-#   email     = "user@example.com",
-#   password  = "fakepassword"
-# )
-#clean data
+result_df <- as.data.frame(cbind(invoice, date, store_number, store_name, 
+                   address, city, zipcode, store_location,
+                   county_number, county, category, category_name,
+                   vendor_number, vendor_name, item_number, item_descp,pack,
+                   bottle_vol, state_bottle_cost, state_bottle_retail, sale_bottles,sale_dollars, 
+                   sale_liters, sale_gallons))
+##############################
+
+#test the get function
+
+liquor_data <- get_liquor(url="https://data.iowa.gov/resource/m3tr-qhgy.json")
+liquor_df <- c()
+for(i in 1:length(liquor_data)){
+  liquor_df <- rbind(liquor_df,liquor_data[[1]])
+}
+write.csv(liquor_df, "../data/liquor_df.csv",row.names = FALSE)
+
+
+
