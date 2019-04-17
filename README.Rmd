@@ -16,6 +16,13 @@ Our GitHub repository for this lab can be found [here](https://github.com/xiyuan
 
 ### Demonstration of Reading the Data from the API
 
+```{r API}
+library(rvest)
+api_dat <- fromJSON("https://data.iowa.gov/resource/m3tr-qhgy.json")
+
+```
+
+
 ### Data Cleaning
 
 ```{r rename cols}
