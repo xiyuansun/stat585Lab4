@@ -20,12 +20,23 @@ Our GitHub repository for this lab can be found [here](https://github.com/xiyuan
 
 ```{r rename cols}
 
+X <- 
 liq2 %>%
   rename_all(
     funs(
       # Remove spaces between words
       str_replace_all(., "[\\(\\)_\\/ ]", "") %>%
       tolower(.)))
+```
+
+```{r filter weird numeric values}
+library(tidylog)
+
+Y <- X %>%
+  filter(saledollars > 0,
+         volumesoldliters > 0,
+         volumesoldgallons > 0)
+
 ```
 
 
