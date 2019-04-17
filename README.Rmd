@@ -18,4 +18,15 @@ Our GitHub repository for this lab can be found [here](https://github.com/xiyuan
 
 ### Data Cleaning
 
+```{r rename cols}
+
+liq2 %>%
+  rename_all(
+    funs(
+      # Remove spaces between words
+      str_replace_all(., "[\\(\\)_\\/ ]", "") %>%
+      tolower(.)))
+```
+
+
 # Shiny App Visualizations
