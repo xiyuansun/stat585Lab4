@@ -56,4 +56,10 @@ sum(col_vec!=24)
 which(col_vec!=24)
 #107 161 502
 
+liquor_df <- c()
+for(i in c(1:106, 108:160, 162:501, 503:1000)){
+  liquor_df <- rbind(liquor_df, liquor_list[[i]])
+}
+
+
 
