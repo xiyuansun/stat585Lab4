@@ -7,28 +7,29 @@ always_allow_html: yes
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, messsage = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
 
-# Iowa Liquor Sales Data
-
-### Demonstration of Reading the Data from the API
-
-```{r API}
-library(rvest)
-api_dat <- fromJSON("https://data.iowa.gov/resource/m3tr-qhgy.json")
+```{r message = FALSE}
+# Load libraries
+library(tidyverse)
+#Read in data
+story_liquor <- read_csv("data/Iowa_Liquor_Sales-Story.csv")
 
 ```
 
+# Iowa Liquor Sales Data
+
+### Demonstration of Reading the Data from the API
 
 ### Data Cleaning
 
 ```{r dat clean}
 
 newdat <- 
-  dat %>%
+  story_liquor %>%
   
   # Rename cols
   rename_all(funs(
@@ -63,9 +64,7 @@ newdat <-
       )
 )
       
-
 ```
-
 
 
 # Shiny App Visualizations
