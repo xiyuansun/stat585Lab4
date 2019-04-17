@@ -25,30 +25,47 @@ api_dat <- fromJSON("https://data.iowa.gov/resource/m3tr-qhgy.json")
 
 ### Data Cleaning
 
-```{r rename cols}
+```{r dat clean}
 
-X <- 
-liq2 %>%
-  rename_all(
-    funs(
-      # Remove spaces between words
-      str_replace_all(., "[\\(\\)_\\/ ]", "") %>%
-      tolower(.)))
-```
-
-```{r filter weird numeric values}
-library(tidylog)
-
-Y <- X %>%
+newdat <- 
+  dat %>%
   
-  # Weird low numbers
+  # Rename cols
+  rename_all(funs(
+  str_replace_all(., "[\\(\\)_\\/ ]", "") %>%
+  tolower())) %>%
+  
+  # Get rid of weird extremes
   filter(saledollars > 0,
-         volumesoldliters > 0,
-         volumesoldgallons > 0) %>%
-  # weird high numbers. A keg is ~60 liters. Less than 200 L is reasonable
-  filter(volumesoldliters < 200)
+  volumesoldliters > 0,
+  volumesoldgallons > 0,
+  volumesoldliters < 250) %>%
+  
+  # I think Catherine will take care of this in her code
+  mutate(categoryname = tolower(categoryname)) %>%
+  
+  # assign new simple categories
+  mutate(
+    catsimp = case_when(
+      grepl("amaretto", categoryname) ~ "amaretto",
+      grepl("brand", categoryname) ~ "brandy",
+      grepl("creme", categoryname) ~ "creme",
+      grepl("cocktail|sec", categoryname) ~ "general_mixer",
+      grepl("spirit", categoryname) ~ "general_spirit",
+      grepl("gin", categoryname) ~ "gin",
+      grepl("liqueur", categoryname) ~ "liqueur",
+      grepl("schnap", categoryname) ~ "schnapps",
+      grepl("rum", categoryname) ~ "rum",
+      grepl("special", categoryname) ~ "specialty",
+      grepl("tequ|mez", categoryname) ~ "tequila",
+      grepl("vodka", categoryname) ~ "vodka",
+      grepl("whisk|bourb|scotch|rye", categoryname) ~ "whisky"
+      )
+)
+      
 
 ```
+
 
 
 # Shiny App Visualizations
