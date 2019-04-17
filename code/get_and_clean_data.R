@@ -61,5 +61,6 @@ for(i in c(1:106, 108:160, 162:501, 503:1000)){
   liquor_df <- rbind(liquor_df, liquor_list[[i]])
 }
 
+write.csv(liquor_df, "../data/liquor_df.csv",row.names = FALSE)
 
 
