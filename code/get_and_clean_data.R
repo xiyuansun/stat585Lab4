@@ -44,12 +44,9 @@ result_df <- as.data.frame(cbind(invoice, date, store_number, store_name,
 
 #test the get function
 
-liquor_data <- get_liquor(url="https://data.iowa.gov/resource/m3tr-qhgy.json")
-liquor_df <- c()
-for(i in 1:length(liquor_data)){
-  liquor_df <- rbind(liquor_df,liquor_data[[1]])
-}
-write.csv(liquor_df, "../data/liquor_df.csv",row.names = FALSE)
+liquor_list <- get_liquor(url="https://data.iowa.gov/resource/m3tr-qhgy.json")
+
+
 
 
 

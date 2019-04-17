@@ -39,11 +39,15 @@ get_liquor <- function(url){
                        vendor_number, vendor_name, item_number, item_descp,pack,
                        bottle_vol, state_bottle_cost, state_bottle_retail, sale_bottles,sale_dollars, 
                        sale_liters, sale_gallons))
-    
-    liquor_data[[i]]<- result_df
+    if(ncol(result_df)!=24) then {
+      i=i+1
+      liquor_data[[i]] <- NULL
+      }
+    else{liquor_data[[i]]<- result_df}
     
   }
-  #liquor_data <- as.data.frame(liquor_data)
+  
+  
   return(liquor_data)
   
 }
