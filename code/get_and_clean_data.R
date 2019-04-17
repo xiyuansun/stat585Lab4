@@ -46,7 +46,14 @@ result_df <- as.data.frame(cbind(invoice, date, store_number, store_name,
 
 liquor_list <- get_liquor(url="https://data.iowa.gov/resource/m3tr-qhgy.json")
 
+col_vec <- c(0)
 
+for (i in 1:1000){
+  col_vec[i] <- ncol(liquor_list[[i]])
+}
 
+sum(col_vec!=24)
+which(col_vec!=24)
+#107 161 502
 
 
