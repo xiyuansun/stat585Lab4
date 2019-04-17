@@ -40,9 +40,13 @@ liq2 %>%
 library(tidylog)
 
 Y <- X %>%
+  
+  # Weird low numbers
   filter(saledollars > 0,
          volumesoldliters > 0,
-         volumesoldgallons > 0)
+         volumesoldgallons > 0) %>%
+  # weird high numbers. A keg is ~60 liters. Less than 200 L is reasonable
+  filter(volumesoldliters < 200)
 
 ```
 
