@@ -1,5 +1,5 @@
 ---
-title: "Lab 4 - Group 5 Submission"
+title: "Stat 585 Lab 4 - Group 5"
 author: "Katherine Goode, Gina Nichols, Xiyuan Sun, Ying Zheng"
 date: "04/21/2019"
 output: rmarkdown::github_document
@@ -9,3 +9,13 @@ always_allow_html: yes
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, messsage = FALSE)
 ```
+
+Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
+
+# Iowa Liquor Sales Data
+
+### Demonstration of Reading the Data from the API
+
+### Data Cleaning
+
+# Shiny App Visualizations
