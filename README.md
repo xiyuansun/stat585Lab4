@@ -10,17 +10,6 @@ Our GitHub repository for this lab can be found [here](https://github.com/xiyuan
 library(tidyverse)
 ```
 
-    FALSE ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
-
-    FALSE ✔ ggplot2 3.1.0       ✔ purrr   0.3.2  
-    FALSE ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
-    FALSE ✔ tidyr   0.8.3       ✔ stringr 1.4.0  
-    FALSE ✔ readr   1.3.1       ✔ forcats 0.4.0
-
-    FALSE ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    FALSE ✖ dplyr::filter() masks stats::filter()
-    FALSE ✖ dplyr::lag()    masks stats::lag()
-
 Iowa Liquor Sales Data
 ======================
 
@@ -33,23 +22,6 @@ Iowa Liquor Sales Data
 story_liquor <- read_csv("data/Iowa_Liquor_Sales-Story.csv")
 ```
 
-    FALSE Parsed with column specification:
-    FALSE cols(
-    FALSE   .default = col_double(),
-    FALSE   `Invoice/Item Number` = col_character(),
-    FALSE   Date = col_character(),
-    FALSE   `Store Name` = col_character(),
-    FALSE   Address = col_character(),
-    FALSE   City = col_character(),
-    FALSE   `Store Location` = col_character(),
-    FALSE   County = col_character(),
-    FALSE   `Category Name` = col_character(),
-    FALSE   `Vendor Name` = col_character(),
-    FALSE   `Item Description` = col_character()
-    FALSE )
-
-    FALSE See spec(...) for full column specifications.
-
 ``` r
 # Data cleaning
 story_liquor <- story_liquor %>%
@@ -60,9 +32,18 @@ story_liquor <- story_liquor %>%
                       "zipcode", "storelocation", "countynumber",
                       "county", "category", "categoryname", "vendornumber",
                       "vendorname", "itemnumber"), 
-            funs(factor(.) %>% tolower())) %>%
-  mutate_if(.predicate = is.factor, .funs = tolower)
+            funs(factor(.) %>% tolower()))
 ```
+
+    ## Warning: funs() is soft deprecated as of dplyr 0.8.0
+    ## please use list() instead
+    ## 
+    ## # Before:
+    ## funs(name = f(.)
+    ## 
+    ## # After: 
+    ## list(name = ~f(.))
+    ## This warning is displayed once per session.
 
 Shiny App Visualizations
 ========================

@@ -7,12 +7,12 @@ always_allow_html: yes
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, messsage = FALSE, warning = FALSE, comment = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
 
-```{r}
+```{r message = FALSE}
 # Load libraries
 library(tidyverse)
 ```
@@ -23,7 +23,7 @@ library(tidyverse)
 
 ### Data Cleaning
 
-```{r}
+```{r message = FALSE}
 # Read in data
 story_liquor <- read_csv("data/Iowa_Liquor_Sales-Story.csv")
 ```
@@ -38,8 +38,7 @@ story_liquor <- story_liquor %>%
                       "zipcode", "storelocation", "countynumber",
                       "county", "category", "categoryname", "vendornumber",
                       "vendorname", "itemnumber"), 
-            funs(factor(.) %>% tolower())) %>%
-  mutate_if(.predicate = is.factor, .funs = tolower)
+            funs(factor(.) %>% tolower()))
 ```
 
 
