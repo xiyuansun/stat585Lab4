@@ -1,8 +1,10 @@
 #retrieve data
 
 library(readr)
-Iowa_Liquor_Sales_Story <- read_csv("~/Desktop/stat585Lab4/data/Iowa_Liquor_Sales-Story.csv")
-View(Iowa_Liquor_Sales_Story)
+# Iowa_Liquor_Sales_Story <- read_csv("~/Desktop/stat585Lab4/data/Iowa_Liquor_Sales-Story.csv")
+# View(Iowa_Liquor_Sales_Story)
+
+
 initialjson <- jsonlite::read_json("https://data.iowa.gov/resource/m3tr-qhgy.json")
 
 test_json_file <- initialjson[[1]]
