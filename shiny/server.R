@@ -1,7 +1,25 @@
 library(shiny)
 #load the data
-liquor_data <- read.csv("../data/liquor_df.csv")
-levels(liquor_data$date)
+cleaned_data <- as.data.frame(story_liquor_cleaned)
+head(cleaned_data)
+#make up a new response variable: saledollars/volumesoldliters
+shiny_raw_data <- cleaned_data %>%
+  mutate(dollar_per_liter =saledollars/volumesoldliters)%>%
+  select(date, storename, latitude, longitude, catsimp, vendorname,dollar_per_liter)
+
+#time series plot
+#overall dollar_per_liter means on each date
+dollar_per_liter_means <- aggregate(shiny_raw_data$dollar_per_liter, by=list(shiny_raw_data$date),
+                                    FUN=mean, na.rm=T)
+colnames(dollar_per_liter_means) = c("date", "dollar_per_liter_mean")
+
+#aggregate dollar_per_liter by catsimp on each date
+
+#generate a list of length 1272
+#each list element represent one day
+dateData <- lapply(unique(shiny_raw_data$date), 
+                   function(x){shiny_raw_data[shiny_raw_data$date==x, ]})
+
 #time series plot using ggplot2
 library(ggplot2)
 theme_set(theme_minimal())
