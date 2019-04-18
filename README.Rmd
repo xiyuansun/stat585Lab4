@@ -1,40 +1,105 @@
 ---
-title: "Stat 585 Lab 4 - Group 5"
-author: "Katherine Goode, Gina Nichols, Xiyuan Sun, Ying Zheng"
-date: "04/21/2019"
 output: rmarkdown::github_document
 always_allow_html: yes
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
-Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
+# STAT 585 Lab 4 - Group 5
+ 
+**Katherine Goode, Gina Nichols, Xiyuan Sun, Ying Zheng**  
+**04/21/2019**
+
+This document contains an overview of our work for lab 4. Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
 
 ```{r message = FALSE}
-# Load libraries
+# Libraries used
 library(tidyverse)
-#Read in data
-story_liquor <- read_csv("data/Iowa_Liquor_Sales-Story.csv")
-
 ```
 
-# Iowa Liquor Sales Data
+## Iowa Liquor Sales Data
 
-### Demonstration of Reading the Data from the API
+#### Demonstration of Accessing the Data from the API
 
-### Data Cleaning
+
+#### Data Cleaning
+
+For the Shiny app, we will use the full Story County liquor sales dataset provided by Dr. Hofmann. This data is read in below.
+
+```{r}
+# Read in data
+story_liquor_raw <- read_csv("data/Iowa_Liquor_Sales-Story.csv", col_types = cols())
+```
+
+We cleaned up the data before using it in the Shiny app. This involved renaming the variables, adjusting the variable types, and dealing with typos. This work is all included in the following section of code.
 
 ```{r dat clean}
-
-newdat <- 
-  story_liquor %>%
+# Clean data
+story_liquor_cleaned <- story_liquor_raw %>%
   
   # Rename cols
   rename_all(funs(
   str_replace_all(., "[\\(\\)_\\/ ]", "") %>%
   tolower())) %>%
+  
+  # Adjust date variable
+  mutate(date = lubridate::mdy(date)) %>%
+
+  # Send character variables to lower
+  mutate_if(.predicate = is.character,
+            .funs = tolower) %>%
+  
+  # Create factor variables where necessary
+  mutate_at(.vars = c("storenumber", 
+                      "storename", 
+                      "address", 
+                      "city",
+                      "zipcode", 
+                      "storelocation", 
+                      "countynumber",
+                      "county",
+                      "category", 
+                      "categoryname", 
+                      "vendornumber", 
+                      "vendorname", 
+                      "itemnumber", 
+                      "pack"),
+            .funs = factor) %>%
+  
+  # Clean up factor variables
+  mutate(address = str_replace(address, ",", ""),
+         address = str_replace(address, "issac", "isaac"),
+         address = str_replace(address, "4518 mortenson rd ste 109", "4518 mortonsen street suite #109"),
+         address = str_replace(address, "lincolnway", "lincoln way"),
+         storename = str_replace(storename, "a j's", "aj's"),
+         storename = str_replace(storename, "casey's general store # 2560/ ames", 
+                                 "casey's general store # 2560"),
+         storename = str_replace(storename, "casey's general store # 2560", 
+                                 "casey's general store #2560 / ames"), 
+         storelocation = str_split(storelocation, "\n", simplify = TRUE)[,3],
+         latitude = str_split(storelocation, ", ", simplify = TRUE)[,1] %>% 
+           str_replace("\\(", "") %>%
+           as.numeric(),
+         longitude = str_split(storelocation, ", ", simplify = TRUE)[,2] %>%
+           str_replace("[\\)]", "") %>%
+           as.numeric(),
+         categoryname = str_replace(categoryname, "american cordials & liqueurs", 
+                                    "american cordials & liqueur"),
+         categoryname = str_replace(categoryname, "american distilled spirits specialty", 
+                                    "american distilled spirit specialty"),
+         categoryname = str_replace(categoryname, "american vodkas", "american vodka"),
+         categoryname = str_replace(categoryname, "cocktails /rtd", "cocktails / rtd"),
+         categoryname = str_replace(categoryname, "flavored gins", "flavored gin"),
+         categoryname = str_replace(categoryname, "imported distilled spirits specialty", 
+                                    "imported distilled spirit specialty"),
+         categoryname = str_replace(categoryname, "imported vodkas", "imported vodka"),
+         vendorname = str_replace_all(vendorname, "[,\\.\\/-]", "")) %>%
+  group_by(vendornumber) %>%
+  mutate(vendorname = vendorname[1]) %>%
+  ungroup() %>%
+  mutate(vendorname = factor(vendorname)) %>%
   
   # Get rid of weird extremes
   filter(saledollars > 0,
@@ -42,12 +107,9 @@ newdat <-
   volumesoldgallons > 0,
   volumesoldliters < 250) %>%
   
-  # I think Catherine will take care of this in her code
-  mutate(categoryname = tolower(categoryname)) %>%
-  
-  # assign new simple categories
+  # Assign new simple categories
   mutate(
-    catsimp = case_when(
+    catsimp = factor(case_when(
       grepl("amaretto", categoryname) ~ "amaretto",
       grepl("brand", categoryname) ~ "brandy",
       grepl("creme", categoryname) ~ "creme",
@@ -61,10 +123,23 @@ newdat <-
       grepl("tequ|mez", categoryname) ~ "tequila",
       grepl("vodka", categoryname) ~ "vodka",
       grepl("whisk|bourb|scotch|rye", categoryname) ~ "whisky"
-      )
-)
-      
+      ))
+    ) %>%
+  
+  # Select the final order of the variables
+  select(invoiceitemnumber:storelocation, 
+         latitude, 
+         longitude, 
+         countynumber:categoryname, 
+         catsimp, 
+         vendornumber:volumesoldgallons)
 ```
 
+A glimpse of the cleaned data is shown below.
 
-# Shiny App Visualizations
+```{r}
+# Glimpse the data
+glimpse(story_liquor_cleaned)
+```
+
+## Shiny App Visualizations
