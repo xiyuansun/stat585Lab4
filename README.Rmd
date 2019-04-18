@@ -92,7 +92,8 @@ for(i in 1:1000){
   liquor_df <- rbind(liquor_df, liquor_list[[i]])
 }
 
-head(liquor_df)
+# Glimpse the data
+glimpse(liquor_df)
 
 
 ```

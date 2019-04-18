@@ -85,58 +85,36 @@ for(i in 1:1000){
   liquor_df <- rbind(liquor_df, liquor_list[[i]])
 }
 
-head(liquor_df)
+# Glimpse the data
+glimpse(liquor_df)
 ```
 
-    ##        invoice       date store_number                          store_name
-    ## 1 S19803100026 2014-06-27         2568 Hy-Vee Food Store #4 / Cedar Rapids
-    ## 2 S18258100091 2014-04-07         3612          B and C Liquor / Maquoketa
-    ## 3 S09714000020 2012-12-27         4609              Kum & Go #579 / Ankeny
-    ## 4 S12593700070 2013-06-04         3495                      Great Pastimes
-    ## 5 S25680400008 2015-05-18         4800       Walgreens #07968 / Des Moines
-    ## 6 S06229800017 2012-06-25         4137        Fareway Stores #989 / Waukee
-    ##                address         city zipcode
-    ## 1 1556 FIRST AVENUE NE CEDAR RAPIDS   52402
-    ## 2          509 E PLATT    MAQUOKETA   52060
-    ## 3   165 SW MAGAZINE RD       ANKENY   50023
-    ## 4        228 N MAIN ST   MONTICELLO   52310
-    ## 5      6200 SE 14TH ST   DES MOINES   50320
-    ## 6     200 SE LAUREL ST       WAUKEE   50263
-    ##                                                         store_location
-    ## 1 1556 FIRST AVENUE NE \n CEDAR RAPIDS52402 \n (-91.650752, 41.988968)
-    ## 2             509 E PLATT \n MAQUOKETA52060 \n (-90.661269, 42.069219)
-    ## 3         165 SW MAGAZINE RD \n ANKENY50023 \n (-93.601647, 41.717284)
-    ## 4          228 N MAIN ST \n MONTICELLO52310 \n (-91.183413, 42.240132)
-    ## 5          6200 SE 14TH ST \n DES MOINES50320 \n (-93.596871, 41.5282)
-    ## 6            200 SE LAUREL ST \n WAUKEE50263 \n (-93.86786, 41.614033)
-    ##   county_number  county category   category_name vendor_number
-    ## 1            57    Linn  1031080  VODKA 80 PROOF           434
-    ## 2            49 Jackson  1062310      SPICED RUM           260
-    ## 3            77    Polk  1022100         TEQUILA           395
-    ## 4            53   Jones  1081030 COFFEE LIQUEURS           370
-    ## 5            77    Polk  1032080  IMPORTED VODKA            35
-    ## 6            25  Dallas  1031080  VODKA 80 PROOF           380
-    ##                        vendor_name item_number
-    ## 1                   Luxco-St Louis       36668
-    ## 2                  Diageo Americas       43334
-    ## 3                          Proximo       89196
-    ## 4 Pernod Ricard USA/Austin Nichols       67527
-    ## 5             Bacardi U.S.A., Inc.       34433
-    ## 6        Phillips Beverage Company       37346
-    ##                              item_descp pack bottle_vol state_bottle_cost
-    ## 1                          Korski Vodka    6       1750              7.04
-    ## 2             Captain Morgan Spiced Rum   24        375                 5
-    ## 3 Jose Cuervo Especial Reposado Tequila   12        750             10.49
-    ## 4                 Kahlua Coffee Liqueur   12       1000             15.25
-    ## 5                      Grey Goose Vodka   12        750             18.49
-    ## 6                        Phillips Vodka   12        750              3.48
-    ##   state_bottle_retail sale_bottles sale_dollars sale_liters  sale_gallons
-    ## 1               10.56            6        63.36        10.5 2.77380654976
-    ## 2                 7.5            3         22.5       1.125  0.2971935589
-    ## 3               15.73            3        47.19        2.25  0.5943871178
-    ## 4               22.87            1        22.87           1 0.26417205235
-    ## 5               27.74           12       332.88           9 2.37754847122
-    ## 6                5.23           12        62.76           9 2.37754847122
+    ## Observations: 1,000
+    ## Variables: 24
+    ## $ invoice             <fct> S19803100026, S18258100091, S09714000020, S1…
+    ## $ date                <fct> 2014-06-27, 2014-04-07, 2012-12-27, 2013-06-…
+    ## $ store_number        <fct> 2568, 3612, 4609, 3495, 4800, 4137, 2601, 25…
+    ## $ store_name          <fct> Hy-Vee Food Store #4 / Cedar Rapids, B and C…
+    ## $ address             <fct> "1556 FIRST AVENUE NE", "509 E PLATT", "165 …
+    ## $ city                <fct> CEDAR RAPIDS, MAQUOKETA, ANKENY, MONTICELLO,…
+    ## $ zipcode             <fct> 52402, 52060, 50023, 52310, 50320, 50263, 52…
+    ## $ store_location      <fct> "1556 FIRST AVENUE NE \n CEDAR RAPIDS52402 \…
+    ## $ county_number       <fct> 57, 49, 77, 53, 77, 25, 51, 17, 19, 77, 07, …
+    ## $ county              <fct> Linn, Jackson, Polk, Jones, Polk, Dallas, Je…
+    ## $ category            <fct> 1031080, 1062310, 1022100, 1081030, 1032080,…
+    ## $ category_name       <fct> VODKA 80 PROOF, SPICED RUM, TEQUILA, COFFEE …
+    ## $ vendor_number       <fct> 434, 260, 395, 370, 35, 380, 434, 297, 115, …
+    ## $ vendor_name         <fct> "Luxco-St Louis", "Diageo Americas", "Proxim…
+    ## $ item_number         <fct> 36668, 43334, 89196, 67527, 34433, 37346, 36…
+    ## $ item_descp          <fct> Korski Vodka, Captain Morgan Spiced Rum, Jos…
+    ## $ pack                <fct> 6, 24, 12, 12, 12, 12, 6, 12, 6, 12, 6, 6, 6…
+    ## $ bottle_vol          <fct> 1750, 375, 750, 1000, 750, 750, 1750, 750, 1…
+    ## $ state_bottle_cost   <fct> 7.04, 5, 10.49, 15.25, 18.49, 3.48, 7.17, 3.…
+    ## $ state_bottle_retail <fct> 10.56, 7.5, 15.73, 22.87, 27.74, 5.23, 10.76…
+    ## $ sale_bottles        <fct> 6, 3, 3, 1, 12, 12, 24, 12, 24, 168, 6, 6, 6…
+    ## $ sale_dollars        <fct> 63.36, 22.5, 47.19, 22.87, 332.88, 62.76, 25…
+    ## $ sale_liters         <fct> 10.5, 1.125, 2.25, 1, 9, 9, 42, 9, 42, 126, …
+    ## $ sale_gallons        <fct> 2.77380654976, 0.2971935589, 0.5943871178, 0…
 
 #### Data Cleaning
 
