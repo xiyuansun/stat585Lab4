@@ -1,32 +1,156 @@
 
-STAT 585 Lab 4 - Group 5
-========================
+# STAT 585 Lab 4 - Group 5
 
-**Katherine Goode, Gina Nichols, Xiyuan Sun, Ying Zheng**
+**Katherine Goode, Gina Nichols, Xiyuan Sun, Ying Zheng**  
 **04/21/2019**
 
-This document contains an overview of our work for lab 4. Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
+This document contains an overview of our work for lab 4. Our GitHub
+repository for this lab can be found
+[here](https://github.com/xiyuansun/stat585Lab4).
 
 ``` r
 # Libraries used
 library(tidyverse)
+library(readr)
+library(dplyr)
+library(stringr)
 ```
 
-Iowa Liquor Sales Data
-----------------------
+## Iowa Liquor Sales Data
 
 #### Demonstration of Accessing the Data from the API
 
+``` r
+#get_liquor function
+get_liquor <- function(url){
+  initialjson <- jsonlite::read_json(url)
+  tot_length <- length(initialjson)
+  liquor_data <- list()
+  for(i in 1:tot_length){
+    test_json_file <- initialjson[[i]]
+    
+    invoice <- test_json_file$invoice_line_no
+    date <- gsub("[A-z].*$","",test_json_file$date)
+    store_number <- test_json_file$store
+    store_name <- test_json_file$name
+    address <- test_json_file$address
+    city <- test_json_file$city
+    zipcode <- test_json_file$zipcode
+    store_location <-paste0(address, " \n ", city, zipcode," \n (",
+                            as.numeric(unlist(test_json_file$store_location)[-1])[1],", ", 
+                            as.numeric(unlist(test_json_file$store_location)[-1])[2], ")")
+    county_number <- test_json_file$county_number
+    county <- test_json_file$county
+    category <- test_json_file$category
+    category_name <- test_json_file$category_name
+    vendor_number <- test_json_file$vendor_no
+    vendor_name <- test_json_file$vendor_name
+    item_number <- test_json_file$itemno
+    item_descp <- test_json_file$im_desc
+    pack <- test_json_file$pack
+    bottle_vol <- test_json_file$bottle_volume_ml 
+    state_bottle_cost <- test_json_file$state_bottle_cost
+    state_bottle_retail <- test_json_file$state_bottle_retail
+    sale_bottles <- test_json_file$sale_bottles
+    sale_dollars <- test_json_file$sale_dollars
+    sale_liters <- test_json_file$sale_liters
+    sale_gallons <- test_json_file$sale_gallons
+    
+    result_df <- as.data.frame(cbind(invoice, date, store_number, store_name, 
+                       address, city, zipcode, store_location,
+                       county_number, county, category, category_name,
+                       vendor_number, vendor_name, item_number, item_descp,pack,
+                       bottle_vol, state_bottle_cost, state_bottle_retail, sale_bottles,sale_dollars, 
+                       sale_liters, sale_gallons))
+    
+    liquor_data[[i]]<- result_df
+    
+  }
+  
+  
+  return(liquor_data)
+  
+}
+
+# access the data from the API
+
+liquor_list <- get_liquor(url="https://data.iowa.gov/resource/m3tr-qhgy.json")
+
+# convert lists to a data frame
+
+
+#skip those rows
+liquor_df <- c()
+for(i in 1:1000){
+  liquor_df <- rbind(liquor_df, liquor_list[[i]])
+}
+
+head(liquor_df)
+```
+
+    ##        invoice       date store_number                          store_name
+    ## 1 S19803100026 2014-06-27         2568 Hy-Vee Food Store #4 / Cedar Rapids
+    ## 2 S18258100091 2014-04-07         3612          B and C Liquor / Maquoketa
+    ## 3 S09714000020 2012-12-27         4609              Kum & Go #579 / Ankeny
+    ## 4 S12593700070 2013-06-04         3495                      Great Pastimes
+    ## 5 S25680400008 2015-05-18         4800       Walgreens #07968 / Des Moines
+    ## 6 S06229800017 2012-06-25         4137        Fareway Stores #989 / Waukee
+    ##                address         city zipcode
+    ## 1 1556 FIRST AVENUE NE CEDAR RAPIDS   52402
+    ## 2          509 E PLATT    MAQUOKETA   52060
+    ## 3   165 SW MAGAZINE RD       ANKENY   50023
+    ## 4        228 N MAIN ST   MONTICELLO   52310
+    ## 5      6200 SE 14TH ST   DES MOINES   50320
+    ## 6     200 SE LAUREL ST       WAUKEE   50263
+    ##                                                         store_location
+    ## 1 1556 FIRST AVENUE NE \n CEDAR RAPIDS52402 \n (-91.650752, 41.988968)
+    ## 2             509 E PLATT \n MAQUOKETA52060 \n (-90.661269, 42.069219)
+    ## 3         165 SW MAGAZINE RD \n ANKENY50023 \n (-93.601647, 41.717284)
+    ## 4          228 N MAIN ST \n MONTICELLO52310 \n (-91.183413, 42.240132)
+    ## 5          6200 SE 14TH ST \n DES MOINES50320 \n (-93.596871, 41.5282)
+    ## 6            200 SE LAUREL ST \n WAUKEE50263 \n (-93.86786, 41.614033)
+    ##   county_number  county category   category_name vendor_number
+    ## 1            57    Linn  1031080  VODKA 80 PROOF           434
+    ## 2            49 Jackson  1062310      SPICED RUM           260
+    ## 3            77    Polk  1022100         TEQUILA           395
+    ## 4            53   Jones  1081030 COFFEE LIQUEURS           370
+    ## 5            77    Polk  1032080  IMPORTED VODKA            35
+    ## 6            25  Dallas  1031080  VODKA 80 PROOF           380
+    ##                        vendor_name item_number
+    ## 1                   Luxco-St Louis       36668
+    ## 2                  Diageo Americas       43334
+    ## 3                          Proximo       89196
+    ## 4 Pernod Ricard USA/Austin Nichols       67527
+    ## 5             Bacardi U.S.A., Inc.       34433
+    ## 6        Phillips Beverage Company       37346
+    ##                              item_descp pack bottle_vol state_bottle_cost
+    ## 1                          Korski Vodka    6       1750              7.04
+    ## 2             Captain Morgan Spiced Rum   24        375                 5
+    ## 3 Jose Cuervo Especial Reposado Tequila   12        750             10.49
+    ## 4                 Kahlua Coffee Liqueur   12       1000             15.25
+    ## 5                      Grey Goose Vodka   12        750             18.49
+    ## 6                        Phillips Vodka   12        750              3.48
+    ##   state_bottle_retail sale_bottles sale_dollars sale_liters  sale_gallons
+    ## 1               10.56            6        63.36        10.5 2.77380654976
+    ## 2                 7.5            3         22.5       1.125  0.2971935589
+    ## 3               15.73            3        47.19        2.25  0.5943871178
+    ## 4               22.87            1        22.87           1 0.26417205235
+    ## 5               27.74           12       332.88           9 2.37754847122
+    ## 6                5.23           12        62.76           9 2.37754847122
+
 #### Data Cleaning
 
-For the Shiny app, we will use the full Story County liquor sales dataset provided by Dr. Hofmann. This data is read in below.
+For the Shiny app, we will use the full Story County liquor sales
+dataset provided by Dr. Hofmann. This data is read in below.
 
 ``` r
 # Read in data
 story_liquor_raw <- read_csv("data/Iowa_Liquor_Sales-Story.csv", col_types = cols())
 ```
 
-We cleaned up the data before using it in the Shiny app. This involved renaming the variables, adjusting the variable types, and dealing with typos. This work is all included in the following section of code.
+We cleaned up the data before using it in the Shiny app. This involved
+renaming the variables, adjusting the variable types, and dealing with
+typos. This work is all included in the following section of code.
 
 ``` r
 # Clean data
@@ -157,13 +281,12 @@ glimpse(story_liquor_cleaned)
     ## $ itemnumber        <fct> 26821, 27102, 84617, 68036, 76526, 35770, 3165…
     ## $ itemdescription   <chr> "jack daniels old #7 black lbl mini", "templet…
     ## $ pack              <fct> 12, 6, 12, 12, 12, 12, 12, 24, 6, 12, 24, 12, …
-    ## $ bottlevolumeml    <dbl> 500, 750, 1000, 750, 750, 750, 1000, 375, 750,…
+    ## $ bottlevolumeml    <int> 500, 750, 1000, 750, 750, 750, 1000, 375, 750,…
     ## $ statebottlecost   <dbl> 9.06, 18.08, 4.89, 13.00, 5.30, 7.87, 4.30, 1.…
     ## $ statebottleretail <dbl> 13.59, 27.13, 7.33, 19.49, 7.95, 11.81, 6.44, …
-    ## $ bottlessold       <dbl> 1, 6, 6, 3, 1, 3, 12, 24, 6, 2, 3, 12, 6, 12, …
+    ## $ bottlessold       <int> 1, 6, 6, 3, 1, 3, 12, 24, 6, 2, 3, 12, 6, 12, …
     ## $ saledollars       <dbl> 13.59, 162.78, 43.98, 58.47, 7.95, 35.43, 77.2…
     ## $ volumesoldliters  <dbl> 0.50, 4.50, 6.00, 2.25, 0.75, 2.25, 12.00, 9.0…
     ## $ volumesoldgallons <dbl> 0.13, 1.19, 1.59, 0.59, 0.20, 0.59, 3.17, 2.38…
 
-Shiny App Visualizations
-------------------------
+## Shiny App Visualizations
