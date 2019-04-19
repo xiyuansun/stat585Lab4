@@ -80,12 +80,12 @@ server <- function(input, output) {
   output$yearplot <- renderPlotly({
     
     # set the response variable
-    if (input$response == "Total Number of Sales") {
-      stop(safeError('This response variable is not available for temporal plot. 
-                     Please switch to another response variable.'))
-    } else {
-      v = "dollar_per_liter"
-    }
+    # if (input$response == "Total Number of Sales") {
+    #   stop(safeError('This response variable is not available for temporal plot. 
+    #                  Please switch to another response variable.'))
+    # } else {
+       v = "dollar_per_liter"
+    #}
     
     # filter the temp data with the selected category and selected year
     sy_data <- story_temporal_data %>% 
