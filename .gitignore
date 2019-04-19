@@ -26,4 +26,5 @@ vignettes/*.pdf
 rsconnect/
 .Rproj.user
 stat585_lab4.Rproj
-Iowa_Liquor_Sales-Story.csv
+data/Iowa_Liquor_Sales-Story.csv
+data/story_liquor_cleaned.rds
