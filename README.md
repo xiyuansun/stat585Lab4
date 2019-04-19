@@ -214,3 +214,29 @@ glimpse(story_liquor_cleaned)
 
 Shiny App Visualizations
 ------------------------
+
+#### Preparing Spatial Data
+
+For the spatial visualizations, we used the cleaned data to compute the number of sales and average cost per liter (in dollars) by liquor category for each store in the data set.
+
+``` r
+# Prepare spatial data
+story_spatial_data <- story_liquor_cleaned %>%
+  
+  # Select desired variables and remove any na's
+  select(storename, latitude, longitude, catsimp, saledollars, volumesoldliters) %>%
+  na.omit() %>%
+  
+  # Compute dollar per liter for each observation 
+  mutate(dollar_per_liter = saledollars / volumesoldliters) %>%
+  
+  # Determine the number of sales and average dollar per liter
+  group_by(storename, latitude, longitude, catsimp) %>%
+  summarise(count = n(), 
+            ave_dollar_per_liter = mean(dollar_per_liter))
+```
+
+``` r
+# Save the spatial data
+saveRDS(story_spatial_data, "./data/story_spatial_data.rds")
+```

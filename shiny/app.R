@@ -18,7 +18,13 @@ ui <- fluidPage(
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
       sidebarPanel(
-         selectInput("category", 
+        
+        selectInput("response", 
+                    label = "Response Variable", 
+                    choices = c("Total Number of Sales", 
+                                "Average Cost per Liter (Dollars)")),
+        
+        selectInput("category", 
                      label = "Liquor Category", 
                      choices = levels(story_spatial_data$catsimp))
       ),
@@ -26,7 +32,7 @@ ui <- fluidPage(
       # Show a plot of the generated distribution
       mainPanel(
         tabsetPanel(type = "tabs",
-                    tabPanel("Temporal", plotOutput("distPlot")),
+                    tabPanel("Temporal"),
                     tabPanel("Spatial", plotlyOutput("storymap"))
         )
       )
@@ -46,18 +52,32 @@ server <- function(input, output) {
   # Create spatial plot
   output$storymap <- renderPlotly({
     
+    if (input$response == "Total Number of Sales") {
+      color = "count"
+      size = "count"
+    } else {
+      color = "ave_dollar_per_liter"
+      size = "ave_dollar_per_liter"
+    }
+    
     # Create plot
     spatial_plot <- ggplot() + 
       geom_polygon(data = story_county, 
                     aes(x = long, y = lat, group = group), 
-                    alpha = 0.1, 
+                    alpha = 0.2, 
                     color = "black") + 
-       geom_jitter(data = story_spatial_data %>% filter(catsimp == input$category), 
-                  aes(x = longitude, y = latitude, color = n, size = n)) + 
-       labs(x = "Longitude", y = "Latitude", title = "Story County")
+      geom_jitter(data = story_spatial_data %>% filter(catsimp == input$category), 
+                   aes_string(x = 'longitude', 
+                              y = 'latitude', 
+                              color = color, 
+                              size = size),
+                  alpha = 0.8) + 
+      labs(x = "Longitude", y = "Latitude", title = "Story County", color = "Response") + 
+      theme_bw()
    
     # Make plot interactive
-    ggplotly(spatial_plot, width = 800, height = 600)
+    ggplotly(spatial_plot, width = 800, height = 600) %>%
+      layout(legend = list(orientation = "h"))
      
     })
    

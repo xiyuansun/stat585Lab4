@@ -162,6 +162,8 @@ saveRDS(story_liquor_cleaned, "./data/story_liquor_cleaned.rds")
 
 #### Preparing Spatial Data
 
+For the spatial visualizations, we used the cleaned data to compute the number of sales and average cost per liter (in dollars) by liquor category for each store in the data set.
+
 ```{r}
 # Prepare spatial data
 story_spatial_data <- story_liquor_cleaned %>%
@@ -171,11 +173,12 @@ story_spatial_data <- story_liquor_cleaned %>%
   na.omit() %>%
   
   # Compute dollar per liter for each observation 
-  mutate(dollar_per_liter =saledollars/volumesoldliters) %>%
+  mutate(dollar_per_liter = saledollars / volumesoldliters) %>%
   
-  # Determine the number of sales
+  # Determine the number of sales and average dollar per liter
   group_by(storename, latitude, longitude, catsimp) %>%
-  summarise()
+  summarise(count = n(), 
+            ave_dollar_per_liter = mean(dollar_per_liter))
 ```
 
 ```{r}
