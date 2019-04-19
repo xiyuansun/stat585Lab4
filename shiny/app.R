@@ -35,7 +35,7 @@ ui <- fluidPage(
         sliderInput("year", "Year:",
                     min = min(unique(story_temporal_data$yr)), 
                     max = max(unique(story_temporal_data$yr)),
-                    value = 2018),
+                    value = 2015),
         
         selectInput("category", 
                      label = "Liquor Category", 
