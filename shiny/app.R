@@ -20,7 +20,10 @@ ui <- fluidPage(
       
       # Show a plot of the generated distribution
       mainPanel(
-         plotOutput("distPlot")
+        tabsetPanel(type = "tabs",
+                    tabPanel("Temporal", plotOutput("distPlot")),
+                    tabPanel("Spatial")
+        )
       )
    )
 )
