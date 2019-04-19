@@ -4,6 +4,13 @@
 library(plotly)
 library(maps)
 library(shiny)
+library(lubridate) # for working with dates
+library(zoo)
+library(ggplot2)  # for creating graphs
+library(scales)   # to access breaks/formatting functions
+library(gridExtra) # for arranging plots
+library(grid)   # for arrangeing plots
+library(dplyr)  # for subsetting by season
 library(tidyverse)
 
 # Read in necessary data
@@ -28,7 +35,7 @@ ui <- fluidPage(
         sliderInput("year", "Year:",
                     min = min(unique(story_temporal_data$yr)), 
                     max = max(unique(story_temporal_data$yr)),
-                    value = 500),
+                    value = 2018),
         
         selectInput("category", 
                      label = "Liquor Category", 
