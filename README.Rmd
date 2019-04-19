@@ -153,4 +153,9 @@ A glimpse of the cleaned data is shown below.
 glimpse(story_liquor_cleaned)
 ```
 
+```{r echo = FALSE}
+# Save the cleaned data
+saveRDS(story_liquor_cleaned, "./data/story_liquor_cleaned.rds")
+```
+
 ## Shiny App Visualizations
