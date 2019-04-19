@@ -199,13 +199,13 @@ dplmeanDaily <- ggplot(one_year_factorData2, aes(date, dollar_per_liter_mean)) +
   geom_point() +
   ggtitle("Daily Dollar per Liter Mean") +
   xlab("Date") + ylab("Dollar per Liter Mean ($/L)") +
-  scale_x_date(labels=date_format ("%m-%y"))+
+  scale_x_date(labels=date_format ("%m"))+
   theme(plot.title = element_text(lineheight=.8, face="bold",
                                   size = 20)) +
   theme(text = element_text(size=18))
 
 
-dplmeanDaily+facet_grid(. ~ season)
+dplmeanDaily
 
 
 
