@@ -67,7 +67,8 @@ server <- function(input, output) {
                     alpha = 0.2, 
                     color = "black") + 
       geom_jitter(data = story_spatial_data %>% filter(catsimp == input$category), 
-                   aes_string(x = 'longitude', 
+                   aes_string(text = 'storename',
+                              x = 'longitude', 
                               y = 'latitude', 
                               color = color, 
                               size = size),
@@ -76,7 +77,7 @@ server <- function(input, output) {
       theme_bw()
    
     # Make plot interactive
-    ggplotly(spatial_plot, width = 800, height = 600) %>%
+    ggplotly(spatial_plot, width = 800, height = 600, tooltip = c("text", "x", "y", "color")) %>%
       layout(legend = list(orientation = "h"))
      
     })

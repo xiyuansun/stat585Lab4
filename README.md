@@ -235,8 +235,3 @@ story_spatial_data <- story_liquor_cleaned %>%
   summarise(count = n(), 
             ave_dollar_per_liter = mean(dollar_per_liter))
 ```
-
-``` r
-# Save the spatial data
-saveRDS(story_spatial_data, "./data/story_spatial_data.rds")
-```
