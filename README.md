@@ -266,3 +266,5 @@ story_spatial_data <- story_liquor_cleaned %>%
             ave_dollar_per_liter = round(mean(dollar_per_liter), 2)) %>%
   ungroup()
 ```
+
+#### Overview of the App

@@ -224,3 +224,5 @@ story_spatial_data <- story_liquor_cleaned %>%
 # Save the spatial data
 saveRDS(story_spatial_data, "./data/story_spatial_data.rds")
 ```
+
+#### Overview of the App
