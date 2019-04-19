@@ -17,9 +17,10 @@ library(tidyverse)
 story_spatial_data <- readRDS("../data/story_spatial_data.rds")
 story_temporal_data <- readRDS("../data/story_temporal_data.rds")
 
-# Define UI for application that draws a histogram
+# Define UI for application
 ui <- navbarPage("Vizualizations of Liquor Sales in Story County",
                  
+                 # Temporal visualization tab
                  tabPanel("Temporal",
                           
                           # Options
@@ -34,24 +35,25 @@ ui <- navbarPage("Vizualizations of Liquor Sales in Story County",
                                         label = "Liquor Category",
                                         choices = levels(story_spatial_data$catsimp))),
                           
-                          # Plots
+                          # Plot
                           mainPanel(plotlyOutput("yearplot"))),
                  
+                 # Spatial visualization tab
                  tabPanel("Spatial",
+                          
+                          # Options
                           sidebarPanel(
-                            
-                            # Sidebar with a slider input for number of bins 
+                            # Response Selector
                             selectInput("response",
                                         label = "Response Variable",
                                         choices = c("Average Cost per Liter (Dollars)",
                                                     "Total Number of Sales")),
-                            
+                            # Category selector
                             selectInput("category", 
                                         label = "Liquor Category",
-                                        choices = levels(story_spatial_data$catsimp))
-                            
-                          ),
+                                        choices = levels(story_spatial_data$catsimp))),
                           
+                          # Plot
                           mainPanel(plotlyOutput("storymap"))
                  )
 )
@@ -176,7 +178,10 @@ server <- function(input, output) {
                   alpha = 0.8) + 
       xlim(longmin, longmax) +
       ylim(latmin, latmax) +
-      labs(x = "Longitude", y = "Latitude", title = "Story County", color = "Response") + 
+      labs(x = "Longitude",
+           y = "Latitude", 
+           title = "Locations of Story County Liquor Sales", 
+           color = "Response") + 
       scale_colour_gradientn(colours = topo.colors(2)) +
       theme_bw()
    
