@@ -214,7 +214,6 @@ dplmeanDaily
 
 #try to plot the county map
 
-devtools::install_github("lydiaPenglish/smoothMap")
 library(smoothMap)
 library(ggplot2)
 

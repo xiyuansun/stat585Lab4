@@ -1,6 +1,8 @@
 # Shiny app for visualizing Story County liquor sales
 
+library(maps)
 library(shiny)
+library(tidyverse)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -22,7 +24,7 @@ ui <- fluidPage(
       mainPanel(
         tabsetPanel(type = "tabs",
                     tabPanel("Temporal", plotOutput("distPlot")),
-                    tabPanel("Spatial")
+                    tabPanel("Spatial", plotOutput("storymap"))
         )
       )
    )
@@ -39,6 +41,18 @@ server <- function(input, output) {
       # draw the histogram with the specified number of bins
       hist(x, breaks = bins, col = 'darkgray', border = 'white')
    })
+   
+   # Obtain map data for Story County
+   story_county <- map_data("county") %>% filter(region == "iowa", subregion == "story")
+   
+   output$storymap <- renderPlot({
+     
+     ggplot(story_county , aes(x = long, y = lat, group = group)) + 
+       geom_polygon(alpha = 0.1, color = "black") + 
+       labs(x = "Longitude", y = "Latitude", title = "Story County")
+   
+    })
+   
 }
 
 # Run the application 
