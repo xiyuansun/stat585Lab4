@@ -175,11 +175,11 @@ server <- function(input, output) {
       xlim(longmin, longmax) +
       ylim(latmin, latmax) +
       labs(x = "Longitude", y = "Latitude", title = "Story County", color = "Response") + 
+      scale_colour_gradientn(colours = topo.colors(2)) +
       theme_bw()
    
     # Make plot interactive
-    ggplotly(spatial_plot, width = 800, height = 600, tooltip = c("text", "x", "y", "color")) %>%
-      layout(legend = list(orientation = "h"))
+    ggplotly(spatial_plot, width = 800, height = 600)
      
     })
    
