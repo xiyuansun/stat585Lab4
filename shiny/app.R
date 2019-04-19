@@ -120,7 +120,7 @@ server <- function(input, output) {
         (scale_x_date(breaks=date_breaks("2 months"),
                       labels=date_format("%b")))+
         theme(plot.title = element_text(lineheight=.8, face="bold",
-                                        size = 20)) +
+                                        size = 10)) +
         theme(text = element_text(size=18))
       
       # Make plot interactive
