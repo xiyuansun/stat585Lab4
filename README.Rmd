@@ -159,3 +159,26 @@ saveRDS(story_liquor_cleaned, "./data/story_liquor_cleaned.rds")
 ```
 
 ## Shiny App Visualizations
+
+#### Preparing Spatial Data
+
+```{r}
+# Prepare spatial data
+story_spatial_data <- story_liquor_cleaned %>%
+  
+  # Select desired variables and remove any na's
+  select(storename, latitude, longitude, catsimp, saledollars, volumesoldliters) %>%
+  na.omit() %>%
+  
+  # Compute dollar per liter for each observation 
+  mutate(dollar_per_liter =saledollars/volumesoldliters) %>%
+  
+  # Determine the number of sales
+  group_by(storename, latitude, longitude, catsimp) %>%
+  summarise()
+```
+
+```{r}
+# Save the spatial data
+saveRDS(story_spatial_data, "./data/story_spatial_data.rds")
+```
