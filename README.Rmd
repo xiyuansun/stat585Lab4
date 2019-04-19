@@ -16,6 +16,13 @@ This document contains an overview of our work for lab 4. Our GitHub repository 
 
 ```{r message = FALSE}
 # Libraries used
+library(lubridate) # for working with dates
+library(zoo)
+library(ggplot2)  # for creating graphs
+library(scales)   # to access breaks/formatting functions
+library(gridExtra) # for arranging plots
+library(grid)   # for arrangeing plots
+library(dplyr)  # for subsetting by season
 library(tidyverse)
 ```
 
@@ -159,6 +166,30 @@ saveRDS(story_liquor_cleaned, "./data/story_liquor_cleaned.rds")
 ```
 
 ## Shiny App Visualizations
+
+#### Preparing Temporal Data
+
+For the temporal visualizations, we used the cleaned data to compute the number of sales and average cost per liter (in dollars per liter) by liquor category for each date in the data set.
+
+```{r}
+# Prepare temporal data
+
+story_temporal_data <- story_liquor_cleaned %>%
+  mutate(dollar_per_liter =saledollars/volumesoldliters)%>%
+  select(date, storename, latitude, longitude, catsimp, vendorname,dollar_per_liter)
+
+story_temporal_data$month_yr <- format(as.Date(story_temporal_data$date), "%Y-%m")
+story_temporal_data$yr <- year(story_temporal_data$date)
+story_temporal_data <- story_temporal_data[order(as.Date(story_temporal_data$date)),]
+
+```
+
+```{r eval = FALSE, echo = FALSE}
+# Save the spatial data
+saveRDS(story_temporal_data, "./data/story_temporal_data.rds")
+```
+
+
 
 #### Preparing Spatial Data
 

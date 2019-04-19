@@ -23,6 +23,11 @@ ui <- fluidPage(
                     label = "Response Variable", 
                     choices = c("Average Cost per Liter (Dollars)",
                                 "Total Number of Sales")),
+        selectInput(
+          "year",
+          label = "Year",
+          choices = levels(as.factor(unique(story_temporal_data$yr)))
+        ),
         
         selectInput("category", 
                      label = "Liquor Category", 
@@ -43,6 +48,10 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   # TEMPORAL VISUALIZATIONS ------------------------------------------------------------
+  
+  # Generate date data
+  
+  
   
   # SPATIAL VISUALIZATIONS -------------------------------------------------------------
   
