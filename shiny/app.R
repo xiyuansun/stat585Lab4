@@ -16,43 +16,45 @@ library(tidyverse)
 # Read in necessary data
 story_spatial_data <- readRDS("../data/story_spatial_data.rds")
 story_temporal_data <- readRDS("../data/story_temporal_data.rds")
+
 # Define UI for application that draws a histogram
-ui <- fluidPage(
-   
-   # Application title
-   titlePanel("Liquor Sales in Story County"),
-   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-        
-        selectInput("response", 
-                    label = "Response Variable", 
-                    choices = c("Average Cost per Liter (Dollars)",
-                                "Total Number of Sales")
-                    ),
-        # Input: Simple integer interval ----
-        sliderInput("year", "Year:",
-                    min = min(unique(story_temporal_data$yr)), 
-                    max = max(unique(story_temporal_data$yr)),
-                    value = 2015),
-        
-        selectInput("category", 
-                     label = "Liquor Category", 
-                     choices = levels(story_spatial_data$catsimp)
-                    )
-        ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-        tabsetPanel(type = "tabs",
-                    tabPanel("Input Value", tableOutput("values")),
-                    tabPanel("Temporal",plotlyOutput("yearplot")),
-                    tabPanel("Spatial", plotlyOutput("storymap"))
-                    )
-        )
-      )
-   )
+ui <- navbarPage("Vizualizations of Liquor Sales in Story County",
+                 
+                 tabPanel("Temporal",
+                          
+                          # Options
+                          sidebarPanel(
+                            # Year selector
+                            sliderInput("year", "Year:",
+                                        min = min(unique(story_temporal_data$yr)),
+                                        max = max(unique(story_temporal_data$yr)),
+                                        value = 2015),
+                            # Category selector
+                            selectInput("category", 
+                                        label = "Liquor Category",
+                                        choices = levels(story_spatial_data$catsimp))),
+                          
+                          # Plots
+                          mainPanel(plotlyOutput("yearplot"))),
+                 
+                 tabPanel("Spatial",
+                          sidebarPanel(
+                            
+                            # Sidebar with a slider input for number of bins 
+                            selectInput("response",
+                                        label = "Response Variable",
+                                        choices = c("Average Cost per Liter (Dollars)",
+                                                    "Total Number of Sales")),
+                            
+                            selectInput("category", 
+                                        label = "Liquor Category",
+                                        choices = levels(story_spatial_data$catsimp))
+                            
+                          ),
+                          
+                          mainPanel(plotlyOutput("storymap"))
+                 )
+)
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
