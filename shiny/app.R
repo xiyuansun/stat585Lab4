@@ -22,17 +22,18 @@ ui <- fluidPage(
         selectInput("response", 
                     label = "Response Variable", 
                     choices = c("Average Cost per Liter (Dollars)",
-                                "Total Number of Sales")),
-        selectInput(
-          "year",
-          label = "Year",
-          choices = levels(as.factor(unique(story_temporal_data$yr)))
-        ),
+                                "Total Number of Sales")
+                    ),
+        selectInput("year",
+                    label = "Year",
+                    choices = levels(as.factor(unique(story_temporal_data$yr)))
+                    ),
         
         selectInput("category", 
                      label = "Liquor Category", 
-                     choices = levels(story_spatial_data$catsimp))
-      ),
+                     choices = levels(story_spatial_data$catsimp)
+                    )
+        ),
       
       # Show a plot of the generated distribution
       mainPanel(
@@ -49,7 +50,32 @@ server <- function(input, output) {
   
   # TEMPORAL VISUALIZATIONS ------------------------------------------------------------
   
-  # Generate date data
+  # Create temporal plot
+  output$yearplot <- renderPlotly({
+    
+    # set the response variable
+    if (input$response == "Total Number of Sales") {
+      v = "count"
+    } else {
+      v = "dollar_per_liter"
+    }
+    
+    # filter the temp data with the selected category and selected year
+    sy_data <- story_temporal_data %>% 
+      filter(yr==as.numeric(input$year))
+    
+    if(input$category %in% levels(sy_data$catsimp)){
+      sy_factor_data <- sy_data %>% filter(catsimp == input$category)
+      sy_factor_dateData <- lapply(unique(sy_factor_data$date), 
+                                function(x){sy_factor_data[sy_factor_data$date==x, ]})
+      
+      
+      
+    }else{
+      stop(safeError('This category does not show up in the selected year. Please try with another category.'))
+    }
+    
+  })
   
   
   

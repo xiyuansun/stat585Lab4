@@ -237,7 +237,8 @@ liquor category for each date in the data set.
 
 story_temporal_data <- story_liquor_cleaned %>%
   mutate(dollar_per_liter =saledollars/volumesoldliters)%>%
-  select(date, storename, latitude, longitude, catsimp, vendorname,dollar_per_liter)
+  select(date, storename, latitude, longitude, catsimp, vendorname,dollar_per_liter)%>%
+  na.omit()
 
 story_temporal_data$month_yr <- format(as.Date(story_temporal_data$date), "%Y-%m")
 story_temporal_data$yr <- year(story_temporal_data$date)

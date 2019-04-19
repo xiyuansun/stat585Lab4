@@ -136,7 +136,32 @@ levels(as.factor(shiny_sorted_data$catsimp))
 f="amaretto"
 v<- "dollar_per_liter"
 
+
+
 shiny_factor_data <- shiny_sorted_data %>% filter(catsimp==f)
+
+v = "dollar_per_liter"
+sy_data <- story_temporal_data %>% 
+  filter(yr==2018)
+sy_factor_data <- sy_data %>% filter(catsimp == "brandy")
+sy_factor_dateData <- lapply(unique(sy_factor_data$date), 
+                             function(x){sy_factor_data[sy_factor_data$date==x, ]})
+
+sy_factorData <- lapply(sy_factor_dateData, function(x){
+  meanDat <- as.data.frame(t(tapply(x[,v],x$month_yr, function(z) mean(z, na.rm = T))))
+  names(meanDat) <- paste0(v, "_mean")
+  #combine data into a single data object
+  means <- cbind(unique(x$date), f, meanDat)
+  names(means)[1] <- "date"
+  return(means)
+})
+
+sy_factorData <- Reduce(x=sy_factorData, f=rbind)
+
+
+
+
+
 
 factor_dateData <- lapply(unique(shiny_factor_data$date), 
                           function(x){shiny_factor_data[shiny_factor_data$date==x, ]})
