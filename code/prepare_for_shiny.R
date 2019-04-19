@@ -187,7 +187,7 @@ factorData2 <- factorData2 %>%
           ifelse(month %in% c(9, 10, 11), "Fall", "Error")))))
 
 one_year_factorData2 <- factorData2 %>%
-  filter(year==2016)
+  filter(year==2014)
 
 #time series plot using ggplot2
 
@@ -199,7 +199,8 @@ dplmeanDaily <- ggplot(one_year_factorData2, aes(date, dollar_per_liter_mean)) +
   geom_point() +
   ggtitle("Daily Dollar per Liter Mean") +
   xlab("Date") + ylab("Dollar per Liter Mean ($/L)") +
-  scale_x_date(labels=date_format ("%m"))+
+  (scale_x_date(breaks=date_breaks("2 months"),
+                labels=date_format("%b")))+
   theme(plot.title = element_text(lineheight=.8, face="bold",
                                   size = 20)) +
   theme(text = element_text(size=18))
