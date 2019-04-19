@@ -207,10 +207,15 @@ story_spatial_data <- story_liquor_cleaned %>%
   # Compute dollar per liter for each observation 
   mutate(dollar_per_liter = saledollars / volumesoldliters) %>%
   
+  mutate_at(.vars = c("latitude", "longitude"),
+            .funs = round,
+            digits = 1) %>%
+  
   # Determine the number of sales and average dollar per liter
-  group_by(storename, latitude, longitude, catsimp) %>%
+  group_by(storename, catsimp, latitude, longitude) %>%
   summarise(count = n(), 
-            ave_dollar_per_liter = mean(dollar_per_liter))
+            ave_dollar_per_liter = mean(dollar_per_liter)) %>%
+  ungroup() 
 ```
 
 ```{r eval = FALSE, echo = FALSE}

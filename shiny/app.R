@@ -142,6 +142,12 @@ server <- function(input, output) {
   # Obtain map data for Story County
   story_county <- map_data("county") %>% filter(region == "iowa", subregion == "story")
   
+  # Determine boundaries for plot
+  latmin = min(story_spatial_data$latitude) - 0.1
+  latmax = max(story_spatial_data$latitude) + 0.05
+  longmin = min(story_spatial_data$longitude) - 0.05
+  longmax = max(story_spatial_data$longitude) + 0.1
+  
   # Create spatial plot
   output$storymap <- renderPlotly({
     
@@ -166,6 +172,8 @@ server <- function(input, output) {
                               color = color, 
                               size = size),
                   alpha = 0.8) + 
+      xlim(longmin, longmax) +
+      ylim(latmin, latmax) +
       labs(x = "Longitude", y = "Latitude", title = "Story County", color = "Response") + 
       theme_bw()
    
