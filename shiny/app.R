@@ -21,8 +21,8 @@ ui <- fluidPage(
         
         selectInput("response", 
                     label = "Response Variable", 
-                    choices = c("Total Number of Sales", 
-                                "Average Cost per Liter (Dollars)")),
+                    choices = c("Average Cost per Liter (Dollars)",
+                                "Total Number of Sales")),
         
         selectInput("category", 
                      label = "Liquor Category", 
