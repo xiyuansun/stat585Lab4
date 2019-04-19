@@ -196,7 +196,7 @@ one_year_factorData2 <- factorData2 %>%
 #   theme(axis.text.x = element_text(angle = 45))
 
 dplmeanDaily <- ggplot(one_year_factorData2, aes(date, dollar_per_liter_mean)) +
-  geom_point() +
+  geom_line(na.rm=TRUE) +
   ggtitle("Daily Dollar per Liter Mean") +
   xlab("Date") + ylab("Dollar per Liter Mean ($/L)") +
   (scale_x_date(breaks=date_breaks("2 months"),
@@ -208,6 +208,27 @@ dplmeanDaily <- ggplot(one_year_factorData2, aes(date, dollar_per_liter_mean)) +
 
 dplmeanDaily
 
+#we would add another factor data's time series line to the same plot later
 
+############################################################################
+
+#try to plot the county map
+
+devtools::install_github("lydiaPenglish/smoothMap")
+library(smoothMap)
+library(ggplot2)
+
+
+us_file <- "../data/gadm36_USA_shp/gadm36_USA_1.shp"
+us_data <- team_4(us_file, tolerance = 0.01)
+iowa_data <- us_data %>% filter(NAME_1=="Iowa")
+#set the bounary for story county
+min(cleaned_data$latitude, na.rm = TRUE) #41.87786
+max(cleaned_data$latitude, na.rm = TRUE) #42.18774
+
+min(cleaned_data$longitude, na.rm = TRUE) #-93.71566
+max(cleaned_data$longitude, na.rm = TRUE) #-93.30939
+
+story_county_data <- iowa_data %>%filter(lat>=35 & lat<=45 & long >= -95 & long <=-90)
 
 
