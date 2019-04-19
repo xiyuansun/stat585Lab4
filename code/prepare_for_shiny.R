@@ -148,20 +148,37 @@ sy_factor_dateData <- lapply(unique(sy_factor_data$date),
                              function(x){sy_factor_data[sy_factor_data$date==x, ]})
 
 sy_factorData <- lapply(sy_factor_dateData, function(x){
-  meanDat <- as.data.frame(t(tapply(x[,v],x$month_yr, function(z) mean(z, na.rm = T))))
+  meanDat <- as.data.frame(t(tapply(t(x[,v]),x$date, function(z) mean(z, na.rm = T))))
   names(meanDat) <- paste0(v, "_mean")
   #combine data into a single data object
-  means <- cbind(unique(x$date), f, meanDat)
+  means <- cbind(unique(x$date), "brandy", meanDat)
   names(means)[1] <- "date"
   return(means)
 })
 
 sy_factorData <- Reduce(x=sy_factorData, f=rbind)
 
+#add year,month to factorData
+sy_factorData$year <- year(sy_factorData$date)
+sy_factorData$month <- month(sy_factorData$date)
+#add season to factorData
+sy_factorData <- sy_factorData %>% 
+  mutate(season = ifelse(month %in% c(12, 1, 2), "Winter",
+                         ifelse(month %in% c(3, 4, 5), "Spring",
+                                ifelse(month %in% c(6, 7, 8), "Summer",
+                                       ifelse(month %in% c(9, 10, 11), "Fall", "Error")))))
 
+dplmeanDaily <- ggplot(sy_factorData, aes(date, dollar_per_liter_mean)) +
+  geom_line(na.rm=TRUE) +
+  ggtitle(paste0("Daily Dollar per Liter Mean", "in Year ","2018", "Category: ", "brandy")) +
+  xlab("Date") + ylab("Dollar per Liter Mean ($/L)") +
+  (scale_x_date(breaks=date_breaks("2 months"),
+                labels=date_format("%b")))+
+  theme(plot.title = element_text(lineheight=.8, face="bold",
+                                  size = 20)) +
+  theme(text = element_text(size=18))
 
-
-
+dplmeanDaily
 
 factor_dateData <- lapply(unique(shiny_factor_data$date), 
                           function(x){shiny_factor_data[shiny_factor_data$date==x, ]})
