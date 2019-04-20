@@ -89,9 +89,10 @@ server <- function(input, output) {
     
     # filter the temp data with the selected category and selected year
     sy_data <- story_temporal_data %>% 
-      filter(yr==as.numeric(input$year))
+      filter(yr==as.numeric(input$year))%>%
+      mutate(Category=as.character(catsimp))
     
-    if(input$category %in% levels(sy_data$catsimp)){
+    if(input$category %in% levels(unique(as.factor(sy_data$Category)))){
       sy_factor_data <- sy_data %>% filter(catsimp == input$category)
       sy_factor_dateData <- lapply(unique(sy_factor_data$date), 
                                 function(x){sy_factor_data[sy_factor_data$date==x, ]})
@@ -125,7 +126,7 @@ server <- function(input, output) {
                       labels=date_format("%b")))+
         theme(plot.title = element_text(lineheight=.8, face="bold",
                                         size = 10)) +
-        theme(text = element_text(size=18))
+        theme(text = element_text(size=10))
       
       # Make plot interactive
       ggplotly(dplmeanDaily)
@@ -134,7 +135,9 @@ server <- function(input, output) {
       
       
     }else{
-      stop(safeError('This category does not show up in the selected year. Please try with another category.'))
+      dplmeanDaily2 <- ggplot()+
+        ggtitle("This category is not available in the selected year.")
+      ggplotly(dplmeanDaily2)
     }
     
   })
