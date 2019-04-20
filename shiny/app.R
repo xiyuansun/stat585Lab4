@@ -49,7 +49,7 @@ ui <- navbarPage("Visualizations of Liquor Sales in Story County",
                                         choices = c("Average Cost per Liter (Dollars)",
                                                     "Total Number of Sales")),
                             # Category selector
-                            selectInput("category", 
+                            selectInput("scategory", 
                                         label = "Liquor Category",
                                         choices = levels(story_spatial_data$catsimp))),
                           
@@ -172,7 +172,7 @@ server <- function(input, output) {
                     aes(x = long, y = lat, group = group), 
                     alpha = 0.2, 
                     color = "black") + 
-      geom_jitter(data = story_spatial_data %>% filter(catsimp == input$category), 
+      geom_jitter(data = story_spatial_data %>% filter(catsimp == input$scategory), 
                    aes_string(text = 'storename',
                               x = 'longitude', 
                               y = 'latitude', 

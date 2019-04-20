@@ -232,12 +232,14 @@ We wrote a shiny app to visualize the Liquor Sale data in Story County.
 
 The app has two tabs: 
 
-(1) Temporal tab shows daily sale dollar per liter mean of selected liquor category time series plot in the user selected year. When the category does not show up in the selected year, it will promt out an error message letting the user switch to another category. 
+(1) Temporal tab shows daily sale dollar per liter mean of selected liquor category time series plot in the user selected year. When the category does not show up in the selected year, it will print out an error message letting the user switch to another category. 
 
-(2) Spatial tab shows ...
+(2) The spatial tab shows a plot of the locations where liquor is sold in Story County. There are two response variables that can be viewed, and there are 13 categories of liquor types to select from. The first response variable is the average cost per liter of the liquor, and the second response variable is the total number of sales of the liquor category at a location.
+
+The app can be run using the command below.
 
 ```{r eval=FALSE, echo=TRUE}
-runApp('./shiny')
+runApp('shiny')
 ```
 
 
