@@ -1,11 +1,12 @@
 
-STAT 585 Lab 4 - Group 5
-========================
+# STAT 585 Lab 4 - Group 5
 
-**Katherine Goode, Gina Nichols, Xiyuan Sun, Ying Zheng**
+**Katherine Goode, Gina Nichols, Xiyuan Sun, Ying Zheng**  
 **04/21/2019**
 
-This document contains an overview of our work for lab 4. Our GitHub repository for this lab can be found [here](https://github.com/xiyuansun/stat585Lab4).
+This document contains an overview of our work for lab 4. Our GitHub
+repository for this lab can be found
+[here](https://github.com/xiyuansun/stat585Lab4).
 
 ``` r
 # Libraries used
@@ -17,14 +18,16 @@ library(gridExtra) # for arranging plots
 library(grid)   # for arrangeing plots
 library(dplyr)  # for subsetting by season
 library(tidyverse)
+library(shiny)
 ```
 
-Iowa Liquor Sales Data
-----------------------
+## Iowa Liquor Sales Data
 
 #### Demonstration of Accessing the Data from the API
 
-The code below demonstrates how to access the data from the API. Since we do not have a key, this accesses a subset of the data.
+The code below demonstrates how to access the data from the API. Since
+we do not have a key, this accesses a subset of the
+data.
 
 ``` r
 story_liquor_raw_subset <- jsonlite::fromJSON("https://data.iowa.gov/resource/m3tr-qhgy.json")
@@ -73,14 +76,17 @@ glimpse(story_liquor_raw_subset)
 
 #### Data Cleaning
 
-For the Shiny app, we will use the full Story County liquor sales dataset provided by Dr. Hofmann. This data is read in below.
+For the Shiny app, we will use the full Story County liquor sales
+dataset provided by Dr. Hofmann. This data is read in below.
 
 ``` r
 # Read in data
 story_liquor_raw <- read_csv("data/Iowa_Liquor_Sales-Story.csv", col_types = cols())
 ```
 
-We cleaned up the data before using it in the Shiny app. This involved renaming the variables, adjusting the variable types, and dealing with typos. This work is all included in the following section of code.
+We cleaned up the data before using it in the Shiny app. This involved
+renaming the variables, adjusting the variable types, and dealing with
+typos. This work is all included in the following section of code.
 
 ``` r
 # Clean data
@@ -211,20 +217,21 @@ glimpse(story_liquor_cleaned)
     ## $ itemnumber        <fct> 26821, 27102, 84617, 68036, 76526, 35770, 3165…
     ## $ itemdescription   <chr> "jack daniels old #7 black lbl mini", "templet…
     ## $ pack              <fct> 12, 6, 12, 12, 12, 12, 12, 24, 6, 12, 24, 12, …
-    ## $ bottlevolumeml    <dbl> 500, 750, 1000, 750, 750, 750, 1000, 375, 750,…
+    ## $ bottlevolumeml    <int> 500, 750, 1000, 750, 750, 750, 1000, 375, 750,…
     ## $ statebottlecost   <dbl> 9.06, 18.08, 4.89, 13.00, 5.30, 7.87, 4.30, 1.…
     ## $ statebottleretail <dbl> 13.59, 27.13, 7.33, 19.49, 7.95, 11.81, 6.44, …
-    ## $ bottlessold       <dbl> 1, 6, 6, 3, 1, 3, 12, 24, 6, 2, 3, 12, 6, 12, …
+    ## $ bottlessold       <int> 1, 6, 6, 3, 1, 3, 12, 24, 6, 2, 3, 12, 6, 12, …
     ## $ saledollars       <dbl> 13.59, 162.78, 43.98, 58.47, 7.95, 35.43, 77.2…
     ## $ volumesoldliters  <dbl> 0.50, 4.50, 6.00, 2.25, 0.75, 2.25, 12.00, 9.0…
     ## $ volumesoldgallons <dbl> 0.13, 1.19, 1.59, 0.59, 0.20, 0.59, 3.17, 2.38…
 
-Shiny App Visualizations
-------------------------
+## Shiny App Visualizations
 
 #### Preparing Temporal Data
 
-For the temporal visualizations, we used the cleaned data to compute the number of sales and average cost per liter (in dollars per liter) by liquor category for each date in the data set.
+For the temporal visualizations, we used the cleaned data to compute the
+average cost per liter (in dollars per liter) by liquor category for
+each date in the data set.
 
 ``` r
 # Prepare temporal data
@@ -241,7 +248,9 @@ story_temporal_data <- story_temporal_data[order(as.Date(story_temporal_data$dat
 
 #### Preparing Spatial Data
 
-For the spatial visualizations, we used the cleaned data to compute the number of sales and average cost per liter (in dollars) by liquor category for each store in the data set.
+For the spatial visualizations, we used the cleaned data to compute the
+number of sales and average cost per liter (in dollars) by liquor
+category for each store in the data set.
 
 ``` r
 # Prepare spatial data
@@ -268,3 +277,20 @@ story_spatial_data <- story_liquor_cleaned %>%
 ```
 
 #### Overview of the App
+
+We wrote a shiny app to visualize the Liquor Sale data in Story County.
+
+The app has two tabs:
+
+1)  Temporal tab shows daily sale dollar per liter mean of selected
+    liquor category time series plot in the user selected year. When the
+    category does not show up in the selected year, it will promt out an
+    error message letting the user switch to another category.
+
+2)  Spatial tab shows …
+
+<!-- end list -->
+
+``` r
+runApp('./shiny')
+```

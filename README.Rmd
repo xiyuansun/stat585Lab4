@@ -24,6 +24,7 @@ library(gridExtra) # for arranging plots
 library(grid)   # for arrangeing plots
 library(dplyr)  # for subsetting by season
 library(tidyverse)
+library(shiny)
 ```
 
 ## Iowa Liquor Sales Data
@@ -169,7 +170,7 @@ saveRDS(story_liquor_cleaned, "./data/story_liquor_cleaned.rds")
 
 #### Preparing Temporal Data
 
-For the temporal visualizations, we used the cleaned data to compute the number of sales and average cost per liter (in dollars per liter) by liquor category for each date in the data set.
+For the temporal visualizations, we used the cleaned data to compute the average cost per liter (in dollars per liter) by liquor category for each date in the data set.
 
 ```{r}
 # Prepare temporal data
@@ -226,3 +227,20 @@ saveRDS(story_spatial_data, "./data/story_spatial_data.rds")
 ```
 
 #### Overview of the App
+
+We wrote a shiny app to visualize the Liquor Sale data in Story County.
+
+The app has two tabs: 
+
+(1) Temporal tab shows daily sale dollar per liter mean of selected liquor category time series plot in the user selected year. When the category does not show up in the selected year, it will promt out an error message letting the user switch to another category. 
+
+(2) Spatial tab shows ...
+
+```{r eval=FALSE, echo=TRUE}
+runApp('./shiny')
+```
+
+
+
+
+
