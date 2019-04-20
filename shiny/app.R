@@ -18,7 +18,7 @@ story_spatial_data <- readRDS("../data/story_spatial_data.rds")
 story_temporal_data <- readRDS("../data/story_temporal_data.rds")
 
 # Define UI for application
-ui <- navbarPage("Vizualizations of Liquor Sales in Story County",
+ui <- navbarPage("Visualizations of Liquor Sales in Story County",
                  
                  # Temporal visualization tab
                  tabPanel("Temporal",
